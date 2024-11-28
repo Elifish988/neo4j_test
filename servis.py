@@ -112,3 +112,25 @@ class PhoneRepository:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+    def two_devices_connected(self, data):
+        try:
+            with self.driver.session() as session:
+                result = session.run("""
+                    MATCH (d:Device {id: $p1}) - [r:CONNECTED] - (d2:Device {id: $p2})
+                    RETURN d
+                """, {"p1": data["p1"], "p2": data["p2"]})
+
+                is_connected = result.single()
+
+                if is_connected:
+                    return jsonify({"is_connected": True}), 200
+                else:
+                    return jsonify({"is_connected": False}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+
+
+
+
+

@@ -39,6 +39,14 @@ def devic_connections_by_ID(id):
 
 
 
+@phone_blueprint.route("/api/two_devices_connected", methods=['GET'])
+def two_devices_connected():
+    data = request.get_json()
+    repository = PhoneRepository(neo4j_driver)
+    return repository.two_devices_connected(data)
+
+
+
 
 
 

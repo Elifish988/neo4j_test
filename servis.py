@@ -131,16 +131,16 @@ class PhoneRepository:
 
 
 
-    def find_Last_connection(self):
+    def find_Last_connection(self, id):
         try:
             with self.driver.session() as session:
                 result = session.run("""
-                    MATCH (d:Device) - [r:CONNECTED] - (d2:Device)
+                    MATCH (d:Device{id: $id }) - [r:CONNECTED] - (d2:Device)
                     WITH r.timestamp AS ts, d, r, d2
                     ORDER BY r.timestamp DESC 
                     RETURN d, r, d2
                     LIMIT 1
-                """)
+                """, {"id": id})
 
                 sequences = [
                     {

@@ -51,11 +51,3 @@ def two_devices_connected():
 def find_Last_connection(id):
     repository = PhoneRepository(neo4j_driver)
     return repository.find_Last_connection(id)
-
-
-
-
-
-
-
-

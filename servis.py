@@ -131,6 +131,37 @@ class PhoneRepository:
 
 
 
+    def find_Last_connection(self):
+        try:
+            with self.driver.session() as session:
+                result = session.run("""
+                    MATCH (d:Device) - [r:CONNECTED] - (d2:Device)
+                    WITH r.timestamp AS ts, d, r, d2
+                    ORDER BY r.timestamp DESC 
+                    RETURN d, r, d2
+                    LIMIT 1
+                """)
+
+                sequences = [
+                    {
+                        "from_device": record["d"].id,
+                        "to_device": record["d2"].id,
+                        "timestamp": record["r"]["timestamp"]
+                    }
+                    for record in result
+                ]
+
+                return jsonify(sequences), 200
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+
 
 
 

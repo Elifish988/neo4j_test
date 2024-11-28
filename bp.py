@@ -47,6 +47,13 @@ def two_devices_connected():
 
 
 
+@phone_blueprint.route("/api/find_Last_connection", methods=['GET'])
+def find_Last_connection():
+    repository = PhoneRepository(neo4j_driver)
+    return repository.find_Last_connection()
+
+
+
 
 
 
